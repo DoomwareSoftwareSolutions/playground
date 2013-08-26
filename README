@@ -88,7 +88,8 @@ Configuracion de la base de datos:
      
      El archivo manage.py se encuentra en el root del proyecto.
 
-   * Para inicializar el server corremos el siguiente comando:
+   * Para inicializar el server corremos el siguiente comando. El server correra en localhost:8000 y para entrar en la
+     consola de administracion de Django hay que ingresar a http://localhost:8000/admin
    
      **************************
      **  ./manage runserver  **
@@ -108,4 +109,3 @@ Configuracion de la base de datos:
      **  ./manage test [aplicacion]  **
      **********************************
      
- 
