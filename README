@@ -76,4 +76,36 @@ Configuracion de la base de datos:
      ***********************************
      **  mysql -u usuario -p  WebApp  **
      ***********************************
+     
+ Correr el proyecto:
+ 
+    * La primera vez que se corre el proyecto y tambien siempre que se cambian las clases del modelo
+      que tienen representacion en una base de datos, se debe correr el comando:
+     
+     ***********************
+     **  ./manage syncdb  **
+     ***********************
+     
+     El archivo manage.py se encuentra en el root del proyecto.
 
+   * Para inicializar el server corremos el siguiente comando:
+   
+     **************************
+     **  ./manage runserver  **
+     **************************
+     
+   * Para crear una nueva aplicacion (lease un nuevo modulo de la aplicacion que estamos creado, ej. authentication)
+     corremos el siguiente comando:
+   
+     *************************
+     **  ./manage startapp  **
+     *************************
+     
+    * Para correr pruebas unitarias en general o de una aplicacion(ver punto anterior) en particular
+      se corre el siguiente comando. Si no se especifica la aplicacion, se corren todas las pruebas.
+   
+     **********************************
+     **  ./manage test [aplicacion]  **
+     **********************************
+     
+ 
