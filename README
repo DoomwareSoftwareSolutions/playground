@@ -58,7 +58,7 @@ Configuracion de la base de datos:
     * Para que funcione correctamente deben crearse tanto el usuario local como remoto.
     
     * Ahora procederemos a realizar lo mismo paro para el usuario admin. Este usuario usara la aplicacion web para realizar
-      operaciones en la base de datos.
+      operaciones en la base de datos. Dejar la contrasenya tal y como está ('admin')
       
       CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';  
       GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT OPTION;  
