@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 import webapp.views
+import apps.authentication.views
 # Uncomment the next two lines to enable the admin:
 
 from django.contrib import admin
@@ -10,8 +11,8 @@ urlpatterns = patterns('',
     # url(r'^$', 'WebApp.views.home', name='home'),
     # url(r'^WebApp/', include('webapp.foo.urls')),
     
-    url(r'^$',webapp.views.baseview),
-    url(r'^signup$',webapp.views.signupview),
+    url(r'^$',webapp.views.BaseView),
+    url(r'^signup$',apps.authentication.views.SignUpView),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

@@ -3,8 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext 
 
-def baseview(request):
-    return render_to_response('index.html',{},RequestContext(request))
-
-def signupview(request):
-    return render_to_response('signup.html',{},RequestContext(request))
+def BaseView(request):
+    if request.method == 'GET':
+        return render_to_response('index.html',{},RequestContext(request))
+    else:
+        pass # TODO POST METHOD
