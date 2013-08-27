@@ -18,7 +18,7 @@ Instruciones de Instalacion:
       el usuario root de la base de datos. RECUERDE ESA CONTRASENIA, le sera requerida para configurar la base de datos
      
     *******************************************************************************************************************   
-    ** sudo apt-get install mysql-server mysql-client memcached python-pylibmc python-memcache python-dev python-pip **          **
+    ** sudo apt-get install mysql-server mysql-client memcached python-pylibmc python-memcache python-dev python-pip **
     *******************************************************************************************************************
      
     * Una vez instaladas las dependecias basicas, procedemos a instalar la biblioteca de hasheo de contrasenias

@@ -15,7 +15,6 @@ class User(models.Model):
 	# Aca va mas informacion del usuario que tenemos que agregar ademas en el metodo ADD
 	firstname = models.CharField(max_length=40, blank=True)
 	lastname = models.CharField(max_length=40, blank=True)
-	# team = models.ForeingKey(Team, null=True, on_delete = models.SET_NULL)
 	
 	# TODO: AGREGAR CAMPOS QUE FALTEN
 	
