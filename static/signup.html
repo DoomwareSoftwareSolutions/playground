@@ -6,8 +6,8 @@
 		<div class="5grid-layout">
 			<div class="row">
 				<div class="12u" id="logo"> <!-- Logo -->
-					<h1><a href="#" class="mobileUI-site-name">Citrusy</a></h1>
-					<p>by HTML5Templates.com</p>
+					<h1><a href="#" class="mobileUI-site-name">LOL Zone</a></h1>
+					<p>the place you play</p>
 				</div>
 			</div>
 		</div>
@@ -33,59 +33,55 @@
 	</header>
 </div>
 <!--BEGIN #signup-form -->
-    <div id="signup-form">
+    <div id="signup-form" style="margin-left: 425px; width: 400px; margin-top: 30px;">
         
         <!--BEGIN #subscribe-inner -->
         <div id="signup-inner">
         
 		<p>Por favor, complete los datos de registro.</p>
 
-            
+            <hr>
             <form id="send" method="post">
             	
-                <p>
+		<table style="border: 1px;">
+                <tr>
+			<td><label for="username">Nombre de usuario *</label></td>
+			<td><input id="username" type="text" name="username" style="width: 200px;" value="" /></td>
+		</tr>
+		<tr>
+			<td><label for="password">Contraseña *</label></td>
+			<td><input id="password" type="password" name="password" value="" /></td>
+		</tr>
+		<tr>
+			<td><label for="vpassword">Vuelva a ingresar su contraseña *</label></td>
+			<td><input id="vpassword" type="password" name="vpassword" value="" /></td>
+		</tr>
+		<tr>
+			<td><label for="email">Email *</label></td>
+			<td> <input id="email" type="text" name="email" value="" /></td>
+		</tr>
+		<tr>
+			<td><label for="name">Nombre</label></td>
+			<td><input id="name" type="text" name="name" value="" /></td>
+		</tr>
+		<tr>
+			<td> <label for="lastname">Apellido</label></td>
+			<td> <input id="lastname" type="text" name="lastname" value="" /></td>
+		</tr>
+		<tr>
+			<td>  <label for="country">Pais</label></td>
+			<td> <input id="Country" type="text" name="country" value="" /></td>
+		</tr>
+		<tr>
+			<td> &nbsp; </td>
+			<td></td>
+		</tr>
+		<tr>
+			<td colspan="2"> <button id="submit" style="margin-left: 150px;" type="submit">Registrar</button></td>
+		</tr>
+                </table>
+                
 
-                <label for="username">Nombre de usuario *</label>
-                <input id="username" type="text" name="username" value="" />
-                </p>
-                
-                <p>
-                <label for="password">Contraseña *</label>
-                <input id="password" type="password" name="password" value="" />
-                </p>
-                
-		<p>
-                <label for="password">Vuelva a ingresar su contraseña *</label>
-                <input id="password" type="password" name="password" value="" />
-                </p>
-		
-                <p>
-
-                <label for="email">Email *</label>
-                <input id="email" type="text" name="email" value="" />
-                </p>
-                
-                <p>
-                <label for="name">Nombre</label>
-                <input id="name" type="text" name="name" value="" />
-                </p>
-                
-                <p>
-
-                <label for="lastname">Apellido</label>
-                <input id="lastname" type="text" name="lastname" value="" />
-                </p>
-                
-                <p>
-                <label for="country">Pais</label>
-                <input id="Country" type="text" name="country" value="" />
-                </p>
-                
-
-		<p>
-                <button id="submit" type="submit">Registrar</button>
-                </p>
-		
 		<p>* Campos Obligatorios</p>
                 
             </form>
