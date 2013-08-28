@@ -1,5 +1,4 @@
 
-
 # ############################################################################### #
 # ####################    DEVELOPMENT ENVIRONMENT SETUP       ################### #
 # ############################################################################### #
@@ -11,6 +10,7 @@ Dependecias:
  4 - python-memcache
  5 - python-pylibmc
  6 - py-bcrypt v0.4
+ 7 - Django 1.5.2
 
 Instruciones de Instalacion:
     
@@ -28,6 +28,12 @@ Instruciones de Instalacion:
      **********************************
      **  sudo pip install py-bcrypt  **
      **********************************
+     
+    * Ahora instalaremos Django ejecutando el siguiente comnado:
+    
+     *************************************
+     **  sudo pip install Django==1.5.2 **
+     *************************************
      
     * Verificar que los procesos memcached y mysqld esten corriendo utilizando el comando pgrep. Si no estan corriendo
       iniciarlos, o reiniciar la pc para que se inicien al bootear
