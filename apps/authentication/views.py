@@ -1,5 +1,6 @@
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.http import HttpResponse, Http404
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
 from apps.authentication.models import User
@@ -12,9 +13,23 @@ def SignInView(request):
         if request.method == 'GET':
             # GET METHOD: Aca envio el formulario de logueo de usuario
             return render_to_response('signin.html',{},RequestContext(request))
+        elif request.method == 'POST':
+            # POST METHOD: Aca valido la informacion de inicio de sesion
+            information = {}
+            information['username'] = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            
+            valid = User.isValidLogin(information['username'], password)
+            if not valid:
+                information['error'] = "No existe el nombre de usuario especificado o la clave no es correcta"
+                return render_to_response('signin.html',information,RequestContext(request))
+            else:
+                response = redirect('/')
+                response.set_signed_cookie('user_id', information['username'])
+                return response
         else:
-            # POST METHOD: Aca valido la informacion de inicio de sesion 
-            pass        
+            raise PermissionDenied  
+                
     
 # Esta view maneja '/signup'. Renderea el formulario de registro y valida los datos ingresados y guarda el nuevo
 # usuario en la DB
@@ -68,6 +83,16 @@ def SignUpView(request):
             return render_to_response('signup.html',information ,RequestContext(request))
         else:
             # Se creo un usuario, redirijo pero seteo la cookie para identificar
-            pass
+            response = redirect('/')
+            response.set_signed_cookie('user_id', information['username'])
+            return response
     else:
-        pass # TODO: SEND 404
+        raise PermissionDenied
+    
+def LogOutView(request):
+    if request.method == 'GET':
+        response = redirect('/')
+        response.delete_cookie('user_id')
+        return response
+    else:
+        raise PermissionDenied
