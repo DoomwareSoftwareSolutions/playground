@@ -6,6 +6,8 @@ from apps.authentication.models import User
 
 # Create your views here.
 
+# Esta view maneja '/signin'. Renderea el formulario de inicio de sesion y valida los datos ingresados
+# buscando el usuario en la database.
 def SignInView(request):
         if request.method == 'GET':
             # GET METHOD: Aca envio el formulario de logueo de usuario
@@ -20,18 +22,52 @@ def SignUpView(request):
     if request.method == 'GET':
         # GET METHOD: Aca envio el formulario de creacion de usuario
         return render_to_response('signup.html',{},RequestContext(request))
-    else:
-        # POST METHOD: Aca valido la informacion de creacion de usuario 
-        username = request.GET.get('username', '')
-        password = request.GET.get('password', '')
-        email = request.GET.get('email', '')
+    elif request.method == 'POST':
+        # POST METHOD: Aca valido la informacion de creacion de usuario
+        information = {}
+        valid = True
         
-        if not User.isValidUsername(username):
-            pass # Respondo con el formulario marcando el error de username invaludo
+        # Obtengo la informacon ingresada
+        information['username'] = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        vpassword = request.POST.get('vpassword', '')
+        information['email'] = request.POST.get('email', '')
+        information['name'] = request.POST.get('name', '')
+        information['lastname'] = request.POST.get('lastname', '')
+        information['country'] = request.POST.get('country', '')
+        
+        # Valido los datos.
+        if not User.isValidUsername(information['username']):
+            # Marco el error de username invaludo
+            valid = False
+            information['username_error'] = 'El nombre de usuario no es valido'
         elif not User.isValidPassword(password):
-            pass # Respondo con el formulario marcando el error de password invaludo
-        elif not User.isValidEmail(email):
-            pass # Respondo con el formulario marcando el error de password invaludo
-        elif user == User.add(username,password,email) == None:
-            pass # Respondo con el formulario marcando usuario ya existente
-        pass 
+            # Marco el error de password invaludo
+            valid = False
+            information['password'] = ''
+            information['password_error'] = 'La clave no es valida'
+        elif password != vpassword:
+            # Marco el error de passwords distintas
+            valid = False
+            information['vpassword'] = ''
+            information['password_error'] = 'Las claves no coinciden'
+        elif not User.isValidEmail(information['email']):
+            # Marco el error de password invaludo
+            valid = False
+            information['email_error'] = 'El email ingresado no es valido'
+        else:
+            user = User.add(information['username'],password,information['email'],information['name'], information['lastname']);
+            if  user == None:
+                # Marco el error de usuario ya existente
+                valid = False
+                information['username_error'] = 'El usuario ya existe. Ingrese otro'
+        
+        
+        if valid == False:
+            # Hubo un error al crear el usuario. Vuelvo a enviar el formulario de creacion con los errores respectivos
+            return render_to_response('signup.html',information ,RequestContext(request))
+        else:
+            # Se creo un usuario, redirijo pero seteo la cookie para identificar
+            pass
+    else:
+        pass # TODO: SEND 404

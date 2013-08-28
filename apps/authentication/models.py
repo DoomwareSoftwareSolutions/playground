@@ -1,8 +1,12 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
+import re
 
 from lib.utils import Crypt
 
+username_re = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+password_re = re.compile(r"^.{3,20}$") 
+email_regexp = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
 
 # Create your models here.
 
@@ -53,18 +57,18 @@ class User(models.Model):
 		
 	@classmethod
 	def isValidUsername(self, username):
-		# TODO: Logica de validacion de usuario
-		return True
+		# Logica de validacion de usuario
+		return username_re.match(username)
 	
 	@classmethod
-	def isValidPassword(self, username):
-		# TODO: Logica de validacion de contrasenia
-		return True
+	def isValidPassword(self, password):
+		# Logica de validacion de contrasenia
+		return password_re.match(password)
 	
 	@classmethod
-	def isValidEmail(self, username):
-		# TODO: Logica de validacion de email
-		return True
+	def isValidEmail(self, email):
+		# Logica de validacion de email
+		return email_regexp.match(email)
 	
 	def updateUserEmail(self, newEMail):
 		User.objects.filter(username = self.username).update(email = newEMail)
