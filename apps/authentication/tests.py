@@ -85,3 +85,38 @@ class UserTest(TestCase):
 		u.updateUserLastname('Two')
 		u = User.getByUsername("user1")
 		self.assertEqual(u.lastname, 'Two')
+		
+	def testUsernameValidation(self):
+		self.assertTrue(User.isValidUsername('abcdef12345_ghijk678')) #Normal characters
+		self.assertTrue(User.isValidUsername('abcdef12345-ghijk678')) #Normal characters
+		self.assertTrue(User.isValidUsername('abcdef1_345_ghijk678')) #Two Undercords
+		self.assertTrue(User.isValidUsername('abcdef1-345-ghijk678')) #Two cords
+		self.assertTrue(User.isValidUsername('123')) #ThreeChars
+		self.assertTrue(User.isValidUsername('12345678901234567890')) #TwentyChars
+		
+		self.assertFalse(User.isValidUsername('')) #Empty
+		self.assertFalse(User.isValidUsername('12')) #TwoChars
+		self.assertFalse(User.isValidUsername('123456789012345678901')) #TwentyOneChars
+		self.assertFalse(User.isValidUsername('randomchars++=?')) #Rare Characters
+		
+	def testPasswordValidation(self):
+		self.assertTrue(User.isValidPassword('abcdef12345_ghijk678')) #Normal characters
+		self.assertTrue(User.isValidPassword('abcdef12345-ghijk678')) #Normal characters
+		self.assertTrue(User.isValidPassword('abcdef1_345_ghijk678')) #Two Undercords
+		self.assertTrue(User.isValidPassword('abcdef1-345-ghijk678')) #Two cords
+		self.assertTrue(User.isValidPassword('123')) #ThreeChars
+		self.assertTrue(User.isValidPassword('12345678901234567890')) #TwentyChars
+		self.assertTrue(User.isValidPassword('randomchars++=?')) #Rare Characters
+		
+		self.assertFalse(User.isValidPassword('')) #Empty
+		self.assertFalse(User.isValidPassword('12')) #TwoChars
+		self.assertFalse(User.isValidPassword('123456789012345678901')) #TwentyOneChars
+		
+	def testEmailValidation(self):
+		self.assertTrue(User.isValidEmail('unstring@otrostring.str')) #Normal mail
+		
+		self.assertFalse(User.isValidEmail('unstring@otrostring')) #Mail without.com
+		self.assertFalse(User.isValidEmail('unstring@otrostring.')) #Mail without com
+		self.assertFalse(User.isValidEmail('unstring.com')) #Mail without @
+		self.assertFalse(User.isValidEmail('@otrostring.com')) #Mail without name
+		self.assertFalse(User.isValidEmail('otrostring')) #Normal string

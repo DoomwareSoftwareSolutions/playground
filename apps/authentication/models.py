@@ -58,17 +58,23 @@ class User(models.Model):
 	@classmethod
 	def isValidUsername(self, username):
 		# Logica de validacion de usuario
-		return username_re.match(username)
+		if username_re.match(username) is None:
+			return False
+		return True
 	
 	@classmethod
 	def isValidPassword(self, password):
 		# Logica de validacion de contrasenia
-		return password_re.match(password)
+		if password_re.match(password) is None:
+			return False
+		return True
 	
 	@classmethod
 	def isValidEmail(self, email):
 		# Logica de validacion de email
-		return email_regexp.match(email)
+		if email_regexp.match(email) is None:
+			return False
+		return True
 	
 	def updateUserEmail(self, newEMail):
 		User.objects.filter(username = self.username).update(email = newEMail)
