@@ -3,6 +3,8 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
+from datetime import timedelta
+
 from apps.authentication.models import User
 
 # Create your views here.
@@ -93,6 +95,48 @@ def LogOutView(request):
     if request.method == 'GET':
         response = redirect('/')
         response.delete_cookie('user_id')
+        return response
+    else:
+        raise PermissionDenied
+    
+def PasswordRecoverView(request):
+    if request.method == 'GET':
+        # GET METHOD: Aca envio el formulario de recuperacion de contrasenia
+        cookie = request.get_signed_cookie(key='lpwd_ok', default=None)
+        if cookie is None:
+            return render_to_response('passwd_recover.html',{},RequestContext(request))
+        else:
+            information = {}
+            information['username'] = cookie.split('|')[0]
+            information['email'] = cookie.split('|')[1]
+            return render_to_response('passwd_recover_confirm.html',information,RequestContext(request))
+    elif request.method == 'POST':
+        information = {}
+        information['username'] = request.POST.get('username', None)
+        information['email'] = request.POST.get('email', None)
+        if not User.isValidUsername(information['username']):
+            information['error'] = 'Por favor ingrese el nombre de usuario correctamente'
+        elif not User.isValidEmail(information['email']):
+            information['error'] = 'Por favor ingrese el mail correctamente'
+        else:
+            user = User.getByUsername(information['username'])
+            if user is None:
+                information['error'] = 'El nombre de usuario especificado no existe'
+            else:
+                response = redirect('/passwd_recover') #Redirect to confirmation
+                expiration_time = timedelta(days=365)
+                response.set_signed_cookie(key='lpwd_ok', value = information['username']+ '|' + information['email'] , max_age=7200 , expires=expiration_time)
+                # Send mail TODO
+                return response
+            
+        return render_to_response('passwd_recover.html',information,RequestContext(request))
+    else:
+        raise PermissionDenied
+        
+def PasswordRecoverResetView(request):
+    if request.method == 'GET':
+        response = redirect('/passwd_recover')
+        response.delete_cookie(key='lpwd_ok')
         return response
     else:
         raise PermissionDenied
