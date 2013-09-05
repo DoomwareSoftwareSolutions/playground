@@ -36,7 +36,7 @@
     <div id="signup-form" style="margin-left: 425px; width: 400px; margin-top: 30px;">
         
         <!--BEGIN #subscribe-inner -->
-        <div id="signup-inner">
+        <div id="signup-inner" class="login-modal">
         
 		<p>Por favor, complete los datos de inicio de sesion.</p>
 
@@ -46,11 +46,11 @@
 		<table style="border: 1px; height: 150px">
                 <tr>
 			<td><label for="username">Nombre de usuario</label></td>
-			<td><input id="username" type="text" name="username" style="width: 200px;" value="{{ username }}" /></td>
+			<td><input id="username" type="text" name="username"  class="login-input"  value="{{ username }}" /></td>
 		</tr>
 		<tr>
 			<td><label for="password">Contraseña</label></td>
-			<td><input id="password" type="password" name="password" style="width: 200px;" value="" /></td>
+			<td><input id="password" type="password" name="password" class="login-input" value="" /></td>
 		</tr>
 		<tr>
 			<td><label style="color: red">{{ error }}</label></td>
@@ -60,7 +60,7 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td colspan="2"> <button id="submit" style="margin-left: 150px;" type="submit">Iniciar Sesion</button></td>
+			<td colspan="2"> <button id="submit" class="login-button" type="submit">Iniciar Sesion</button></td>
 		</tr>
 		<tr>
 			<td><label for="remember">Dejar sesion iniciada</label><input id="remember" name="remember" type="checkbox" value="true" labal="Dejar sesion iniciada"></td>
