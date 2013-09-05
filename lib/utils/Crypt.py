@@ -6,6 +6,8 @@ import hmac
 import random
 import string
 
+from datetime import timedelta, datetime
+
 from webapp.settings.debug import SECRET_KEY
 
 CRYPT_ALGORITHM = 'SHA256'
@@ -73,4 +75,22 @@ def verifyUserInfo(name, pw, hashedID):
         return verifyUserInfo_BCRYPT(name, pw, hashedID)
     else:
         return name+pw == hashedID
+    
+    
+# ############################################################################################### #
+# ###########################      API PARA COOKIES SEGURAS     ################################# #
+# ############################################################################################### #
+    
+def set_secure_cookie(response, key, value, expires=False, time=None):
+    if expires:
+        response.set_signed_cookie(key, value)
+    else:
+        if time is None:
+            max_age = 365*24*3600 #1 year
+        else:
+            max_age = time
+        expiration_time = datetime.strftime(datetime.utcnow() + timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+        response.set_signed_cookie(key=key,value=value, max_age=max_age , expires=expiration_time)
+    
+    return response
     

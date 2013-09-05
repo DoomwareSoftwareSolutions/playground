@@ -3,9 +3,8 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
-from datetime import timedelta
-
 from apps.authentication.models import User
+from lib.utils import Crypt
 
 # Create your views here.
 
@@ -20,6 +19,7 @@ def SignInView(request):
             information = {}
             information['username'] = request.POST.get('username', '')
             password = request.POST.get('password', '')
+            leave_open = request.POST.get('remember',None)
             
             valid = User.isValidLogin(information['username'], password)
             if not valid:
@@ -27,7 +27,10 @@ def SignInView(request):
                 return render_to_response('signin.html',information,RequestContext(request))
             else:
                 response = redirect('/')
-                response.set_signed_cookie('user_id', information['username'])
+                if leave_open is None:
+                    Crypt.set_secure_cookie(response,'user_id',information['username'],expires=True) # Expira al cerrar el navegador
+                else:
+                    Crypt.set_secure_cookie(response,'user_id',information['username'],expires=False) # No expira la cookie
                 return response
         else:
             raise PermissionDenied  
@@ -52,6 +55,7 @@ def SignUpView(request):
         information['name'] = request.POST.get('name', '')
         information['lastname'] = request.POST.get('lastname', '')
         information['country'] = request.POST.get('country', '')
+        leave_open = request.POST.get('remember',None)
         
         # Valido los datos.
         if not User.isValidUsername(information['username']):
@@ -113,19 +117,16 @@ def PasswordRecoverView(request):
     elif request.method == 'POST':
         information = {}
         information['username'] = request.POST.get('username', None)
-        information['email'] = request.POST.get('email', None)
         if not User.isValidUsername(information['username']):
             information['error'] = 'Por favor ingrese el nombre de usuario correctamente'
-        elif not User.isValidEmail(information['email']):
-            information['error'] = 'Por favor ingrese el mail correctamente'
         else:
             user = User.getByUsername(information['username'])
             if user is None:
                 information['error'] = 'El nombre de usuario especificado no existe'
             else:
+                information['email'] = user.email;
                 response = redirect('/passwd_recover') #Redirect to confirmation
-                expiration_time = timedelta(days=365)
-                response.set_signed_cookie(key='lpwd_ok', value = information['username']+ '|' + information['email'] , max_age=7200 , expires=expiration_time)
+                Crypt.set_secure_cookie(response,'lpwd_ok',information['username']+ '|' + information['email'] , expires=False,  time=7200)
                 # Send mail TODO
                 return response
             
