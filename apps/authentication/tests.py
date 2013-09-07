@@ -62,6 +62,13 @@ class UserTest(TestCase):
 		self.assertEqual(u2.firstname, 'User2')
 		self.assertEqual(u2.lastname, 'Two')
 		
+	def testUpdateUserPassword(self):
+		u = User.add("user1","passwd",'user1@mail.com')
+		self.assertTrue(User.isValidLogin("user1","passwd"))
+		u.updateUserPassword("newpasswd")
+		self.assertFalse(User.isValidLogin("user1","passwd"))
+		self.assertTrue(User.isValidLogin("user1","newpasswd"))
+				
 	def testUpdateUserEmail(self):
 		User.add("user1","passwd",'user1@mail.com','User1','One')
 		u = User.getByUsername("user1")

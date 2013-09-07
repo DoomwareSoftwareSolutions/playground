@@ -76,6 +76,10 @@ class User(models.Model):
 			return False
 		return True
 	
+	def updateUserPassword(self, passwd):
+		newHash = Crypt.encryptUserInfo(self.username,passwd)
+		User.objects.filter(username = self.username).update(hashedID = newHash)
+	
 	def updateUserEmail(self, newEMail):
 		User.objects.filter(username = self.username).update(email = newEMail)
 	
