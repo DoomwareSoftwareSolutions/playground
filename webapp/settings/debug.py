@@ -80,7 +80,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/tomas/Projects/WebApp/workspace/Django/webapp/static/',
+    '/home/user/Documents/playground/static/',
 
 )
 
@@ -121,7 +121,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/tomas/Projects/WebApp/workspace/Django/webapp/static/'
+    '/home/user/Documents/playground/static'
 )
 
 INSTALLED_APPS = (
@@ -135,7 +135,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'apps.authentication'
+    'apps.authentication',
+	'apps.events'
 )
 
 # Email Configuration
