@@ -224,3 +224,105 @@ def PasswordRecoverFormView(request, username):
                 
     else:
         raise PermissionDenied
+    
+
+###############################################################################################################################
+#####                                                       APIS                                                          #####
+###############################################################################################################################
+
+
+# ########################################################################################### #
+# ##################################     SIGNIN API     ##################################### #
+# ########################################################################################### #
+
+# Esta view maneja '/signin'. Renderea el formulario de inicio de sesion y valida los datos ingresados
+# buscando el usuario en la database.
+def SignInView(request):
+        if request.method == 'GET':
+            # GET METHOD: Aca envio el formulario de logueo de usuario
+            return render_to_response('signin.html',{},RequestContext(request))
+        elif request.method == 'POST':
+            # POST METHOD: Aca valido la informacion de inicio de sesion
+            information = {}
+            information['username'] = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            leave_open = request.POST.get('remember',None)
+            
+            valid = User.isValidLogin(information['username'], password)
+            if not valid:
+                information['error'] = "No existe el nombre de usuario especificado o la clave no es correcta"
+                return render_to_response('signin.html',information,RequestContext(request))
+            else:
+                response = redirect('/')
+                if leave_open is None:
+                    Crypt.set_secure_cookie(response,'user_id',information['username'],expires=True) # Expira al cerrar el navegador
+                else:
+                    Crypt.set_secure_cookie(response,'user_id',information['username'],expires=False) # No expira la cookie
+                return response
+        else:
+            raise PermissionDenied  
+                
+                
+# ########################################################################################### #
+# ##################################     SIGNUP API     ##################################### #
+# ########################################################################################### #            
+                
+                
+# Esta view maneja '/signup'. Renderea el formulario de registro y valida los datos ingresados y guarda el nuevo
+# usuario en la DB
+def SignUpView(request):
+    if request.method == 'GET':
+        # GET METHOD: Aca envio el formulario de creacion de usuario
+        return render_to_response('signup.html',{},RequestContext(request)) 
+    elif request.method == 'POST':
+        # POST METHOD: Aca valido la informacion de creacion de usuario
+        information = {}
+        
+        # Obtengo la informacon ingresada
+        information['username'] = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        vpassword = request.POST.get('vpassword', '')
+        information['email'] = request.POST.get('email', '')
+        information['name'] = request.POST.get('name', '')
+        information['lastname'] = request.POST.get('lastname', '')
+        information['country'] = request.POST.get('country', '')
+        information['error_code'] = 0 # NO ERROR!
+        leave_open = request.POST.get('remember',None)
+        
+        # Valido los datos.
+        if not User.isValidUsername(information['username']):
+            valid = False
+            information['error_code'] = 1 # ERROR NOMBRE DE USUARIO INVALIDO
+            information['error_description'] = 'El nombre de usuario no es valido'
+        elif not User.isValidPassword(password):
+            # Marco el error de password invaludo
+            information['error_code'] = 2 # ERROR CLAVE INVALIDA
+            information['error_description'] = 'La clave no es valida'
+        elif password != vpassword:
+            # Marco el error de passwords distintas
+            information['error_code'] = 3 # ERROR CLAVES NO SON IDENTICAS
+            information['error_description'] = 'Las claves no coinciden'
+        elif not User.isValidEmail(information['email']):
+            # Marco el error de password invaludo
+            information['error_code'] = 4 # ERROR EMAIL INVALIDO
+            information['error_description'] = 'El email ingresado no es valido'
+        else:
+            user = User.add(information['username'],password,information['email'],information['name'], information['lastname']);
+            if  user == None:
+                # Marco el error de usuario ya existente
+                information['error_code'] = 5 # ERROR USUARIO YA EXISTE
+                information['error_description'] = 'El usuario ya existe. Ingrese otro'
+        
+        
+        if information['error_code'] != 0:
+            # Hubo un error al crear el usuario. Vuelvo a enviar el formulario de creacion con los errores respectivos
+            return render_to_response('signup.html',information ,RequestContext(request))
+        else:
+            # Se creo un usuario, redirijo pero seteo la cookie para identificar
+            response = redirect('/')
+            response.set_signed_cookie('user_id', information['username'])
+            return response
+    else:
+        raise PermissionDenied
+
+    

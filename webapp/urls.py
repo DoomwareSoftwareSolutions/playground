@@ -31,6 +31,6 @@ urlpatterns = patterns('',
     # ############################ #
     # ######### API URLS ######### #
     # ############################ #
-    url(r'^api/signup$',apps.authentication.views.SignUpView),
-    url(r'^api/signin$',apps.authentication.views.SignInView),
+    url(r'^api/signup$',apps.authentication.views.SignUpAPI),
+    url(r'^api/signin$',apps.authentication.views.SignInAPI),
 )
