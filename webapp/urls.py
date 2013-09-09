@@ -16,7 +16,8 @@ urlpatterns = patterns('',
     url(r'^signin$',apps.authentication.views.SignInView),
     url(r'^logout$',apps.authentication.views.LogOutView),
     url(r'^passwd_recover$',apps.authentication.views.PasswordRecoverView),
-
+    url(r'^passwd_recover/(?P<username>[a-zA-Z0-9_-]{3,20}$)$',apps.authentication.views.PasswordRecoverFormView),
+    
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

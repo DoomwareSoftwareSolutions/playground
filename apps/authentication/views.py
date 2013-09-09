@@ -1,8 +1,10 @@
 from django.http import HttpResponse, Http404
 from django.core.exceptions import PermissionDenied
+from django.core.mail import send_mail
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
+from webapp.settings.debug import *
 from apps.authentication.models import User
 from lib.utils import Crypt
 
@@ -102,7 +104,13 @@ def LogOutView(request):
         return response
     else:
         raise PermissionDenied
-    
+  
+def sendRecoveryEmail(user):
+    url = PASSWORD_RECOVERY_URL + user.username
+    message = 'Estimado usuario: \nSi desea recuperar su clave, por favor' + ' ingresar al siguiente link. \n\n\n  ' + url + '\n\n\n Muchas Gracias. UIN Gaming Team'
+    send_mail('UIN Gaming - Sistema de recuperacion de clave',message,
+              TESTING_ADDRESS, [user.email],fail_silently=False);
+  
 def PasswordRecoverView(request):
     if request.method == 'GET':
         # GET METHOD: Aca envio el formulario de recuperacion de contrasenia
@@ -127,17 +135,61 @@ def PasswordRecoverView(request):
                 information['email'] = user.email;
                 response = redirect('/passwd_recover') #Redirect to confirmation
                 Crypt.set_secure_cookie(response,'lpwd_ok',information['username']+ '|' + information['email'] , expires=False,  time=7200)
-                # Send mail TODO
+                sendRecoveryEmail(user);
                 return response
             
         return render_to_response('passwd_recover.html',information,RequestContext(request))
     else:
         raise PermissionDenied
-        
-def PasswordRecoverResetView(request):
+    
+def PasswordRecoverFormView(request, username):
+    # GET METHOD: Aca envio el formulario de recuperacion de contrasenia
     if request.method == 'GET':
-        response = redirect('/passwd_recover')
-        response.delete_cookie(key='lpwd_ok')
-        return response
+        cookie = request.get_signed_cookie(key='lpwd_ok', default=None)
+        if cookie is None:
+            return redirect('/')
+        else:
+            information = {}
+            information['username'] = cookie.split('|')[0]
+            information['email'] = cookie.split('|')[1]
+            if username != information['username']:
+                return redirect('/')
+            else:
+                return render_to_response('passwd_recover_form.html',information,RequestContext(request))
+    elif request.method == 'POST':
+        cookie = request.get_signed_cookie(key='lpwd_ok', default=None)
+        if cookie is None:
+            return redirect('/')
+        else:
+            information = {}
+            information['username'] = cookie.split('|')[0]
+            password = request.POST.get('password', '')
+            vpassword = request.POST.get('vpassword', '')
+            valid = True
+            if not User.isValidPassword(password):
+                # Marco el error de password invaludo
+                valid = False
+                information['error'] = 'La clave no es valida'
+            elif password != vpassword:
+                # Marco el error de passwords distintas
+                valid = False
+                information['error'] = 'Las claves no coinciden'
+            
+            user = User.getByUsername(information['username'])
+            if user is None:
+                # Marco el error de usuario inexistente
+                valid = False
+                information['error'] = 'El usuario no existe'
+                
+            if not valid:
+                # Hubo errores
+                return render_to_response('passwd_recover_form.html',information,RequestContext(request))
+            else:
+                # TODO OK!!
+                user.updateUserPassword(password)
+                response = redirect('/signup')
+                response.delete_cookie('lpwd_ok')
+                return response
+                
     else:
         raise PermissionDenied

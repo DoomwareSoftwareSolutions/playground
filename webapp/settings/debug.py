@@ -138,6 +138,23 @@ INSTALLED_APPS = (
     'apps.authentication'
 )
 
+# Email Configuration
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #PARA PODER USAR LA TESTING ADDRESS
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #PARA IMPRIMIR MAILS POR CONSOLA
+
+TESTING_ADDRESS = 'doomwaresoftsol@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'doomwaresoftsol@gmail.com'
+EMAIL_HOST_PASSWORD = '' #Por cuestiones de seguridad esto no sera subido al repo
+EMAIL_SUBJECT_PREFIX = '[UINGAMING]'
+EMAIL_USE_TLS = True
+
+NOREPLY_ADDRESS = 'noreply@uingaming.com'
+INFO_ADDRESS = 'info@uingaming.com'
+
+PASSWORD_RECOVERY_URL= 'http://localhost:8000/passwd_recover/'
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
