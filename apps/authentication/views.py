@@ -4,6 +4,8 @@ from django.core.mail import send_mail
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
+import json
+
 from webapp.settings.debug import *
 from apps.authentication.models import User
 from lib.utils import Crypt
@@ -237,7 +239,7 @@ def PasswordRecoverFormView(request, username):
 
 # Esta view maneja '/signin'. Renderea el formulario de inicio de sesion y valida los datos ingresados
 # buscando el usuario en la database.
-def SignInView(request):
+def SignInAPI(request):
         if request.method == 'GET':
             # GET METHOD: Aca envio el formulario de logueo de usuario
             return render_to_response('signin.html',{},RequestContext(request))
@@ -266,11 +268,18 @@ def SignInView(request):
 # ########################################################################################### #
 # ##################################     SIGNUP API     ##################################### #
 # ########################################################################################### #            
-                
+
+
+def render_to_json(dictionary):
+    json_txt = json.dumps(dictionary)
+    response = HttpResponse(json_txt, content_type='application/json')
+    return response
+
+
                 
 # Esta view maneja '/signup'. Renderea el formulario de registro y valida los datos ingresados y guarda el nuevo
 # usuario en la DB
-def SignUpView(request):
+def SignUpAPI(request):
     if request.method == 'GET':
         # GET METHOD: Aca envio el formulario de creacion de usuario
         return render_to_response('signup.html',{},RequestContext(request)) 
@@ -315,8 +324,8 @@ def SignUpView(request):
         
         
         if information['error_code'] != 0:
-            # Hubo un error al crear el usuario. Vuelvo a enviar el formulario de creacion con los errores respectivos
-            return render_to_response('signup.html',information ,RequestContext(request))
+            # Hubo un error al crear el usuario. Envio el diccionario en formato json
+            return render_to_json(information);
         else:
             # Se creo un usuario, redirijo pero seteo la cookie para identificar
             response = redirect('/')
