@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
+import re
 
+import datetime
 
 
 # Create your models here.
@@ -37,4 +39,10 @@ class Event(models.Model):
 
 		return event
 	
-
+	@classmethod
+	def isValidDate(self, date):
+		try:
+			datetime.datetime.strptime(date, '%Y-%m-%d')
+		except ValueError:
+			return False
+		return True
