@@ -81,6 +81,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     '/home/user/Documents/playground/static/',
+    '/home/tomas/Projects/WebApp/workspace/Django/webapp/static'
 
 )
 
@@ -93,7 +94,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'rktb*sd*v+v*@st0#v#$l65=0n_6r86^jp)da8@24w^=a@to5='
+SECRET_KEY = 'rktb*sd*v+v*@st0#v#$l65=0n_6r86^jp)da8@24w^=a@to5=' #THIS IS DEBUG CONFIG
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -121,7 +122,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/user/Documents/playground/static'
+    '/home/user/Documents/playground/static',
+    '/home/tomas/Projects/WebApp/workspace/Django/webapp/static'
 )
 
 INSTALLED_APPS = (

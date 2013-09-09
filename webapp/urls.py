@@ -11,6 +11,9 @@ urlpatterns = patterns('',
     # url(r'^$', 'WebApp.views.home', name='home'),
     # url(r'^WebApp/', include('webapp.foo.urls')),
     
+    # ############################ #
+    # ########  HTML URLS ######## #
+    # ############################ #
     url(r'^$',webapp.views.BaseView),
     url(r'^signup$',apps.authentication.views.SignUpView),
     url(r'^signin$',apps.authentication.views.SignInView),
@@ -24,4 +27,10 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     
+    
+    # ############################ #
+    # ######### API URLS ######### #
+    # ############################ #
+    url(r'^api/signup$',apps.authentication.views.SignUpView),
+    url(r'^api/signin$',apps.authentication.views.SignInView),
 )
