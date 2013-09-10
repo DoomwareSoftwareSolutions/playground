@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
-import json
+from lib.utils import api
 
 from webapp.settings.debug import *
 from apps.authentication.models import User
@@ -268,14 +268,6 @@ def SignInAPI(request):
 # ########################################################################################### #
 # ##################################     SIGNUP API     ##################################### #
 # ########################################################################################### #            
-
-
-def render_to_json(dictionary):
-    json_txt = json.dumps(dictionary)
-    response = HttpResponse(json_txt, content_type='application/json')
-    return response
-
-
                 
 # Esta view maneja '/signup'. Renderea el formulario de registro y valida los datos ingresados y guarda el nuevo
 # usuario en la DB
@@ -300,7 +292,6 @@ def SignUpAPI(request):
         
         # Valido los datos.
         if not User.isValidUsername(information['username']):
-            valid = False
             information['error_code'] = 1 # ERROR NOMBRE DE USUARIO INVALIDO
             information['error_description'] = 'El nombre de usuario no es valido'
         elif not User.isValidPassword(password):
@@ -325,7 +316,7 @@ def SignUpAPI(request):
         
         if information['error_code'] != 0:
             # Hubo un error al crear el usuario. Envio el diccionario en formato json
-            return render_to_json(information);
+            return api.render_to_json(information);
         else:
             # Se creo un usuario, redirijo pero seteo la cookie para identificar
             response = redirect('/')
