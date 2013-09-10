@@ -28,11 +28,11 @@ METHOD POST:
 			}
 			
 			Codigos de errores con sus respectivas descripciones:
-			error_code = 0 -> NO HUBO ERRORES
-			error_code = 1 -> ERROR NOMBRE DE USUARIO INVALIDO
-			error_code = 2 -> ERROR CLAVE INVALIDA
-			error_code = 3 -> ERROR CLAVES NO SON IDENTICAS
-			error_code = 4 -> ERROR EMAIL INVALIDO
-			error_code = 5 -> ERROR USUARIO YA EXISTE
+			error_code = 0 -> NO HUBO ERRORES  			error_description = ''
+			error_code = 1 -> ERROR NOMBRE DE USUARIO INVALIDO	error_description = 'El nombre de usuario no es valido'
+			error_code = 2 -> ERROR CLAVE INVALIDA			error_description = 'La clave no es valida'
+			error_code = 3 -> ERROR CLAVES NO SON IDENTICAS		error_description = 'Las claves no coinciden'
+			error_code = 4 -> ERROR EMAIL INVALIDO			error_description = 'El email ingresado no es valido'
+			error_code = 5 -> ERROR USUARIO YA EXISTE		error_description = 'El usuario ya existe. Ingrese otro'
 		
 		En caso de que el registro del nuevo usuario se produjera con éxito, el server redirecciona a la pagina principal // A ESPECIFICAR CON GONCHU
