@@ -1,4 +1,2 @@
-*.py @DoomwareSoftwareSolutions/team1 
-*.py @lucasSimonelli
-*.py @tomasboccardo
+*.py @DoomwareSoftwareSolutions/team1 @tomasboccardo @lucasSimonelli
 *.html @GonchuB
